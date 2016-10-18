@@ -10,7 +10,7 @@ config = {
 }
 
 # Get from the Myra dashboard
-INTENT_MODEL_ID = "xxxxxxxxx"
+INTENT_MODEL_ID = "941036122d9b421b89225976ff1ca3aa"
 
 # Establish a global API connection
 api = client.connect(config)
