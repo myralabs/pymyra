@@ -106,7 +106,7 @@ config = {
 api = client.connect(config)
 
 # This is the demo model that ships with new Myra accounts.
-INTENT_MODEL_ID = "xxxxx" # **_TBD: Greg to add_**
+INTENT_MODEL_ID = "941036122d9b421b89225976ff1ca3aa"
 
 # Establish a global API connection
 api = client.connect(config)
