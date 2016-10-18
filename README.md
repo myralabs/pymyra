@@ -20,9 +20,9 @@ pip install .
 
 `pymyra` provides access to the Myra RESTful APIs. It currently supports `Python 2.7`.
 
-To continue, create an account on http://api.myralabs.com, and from the `Explore API` tab. You can replace the empty `account_id` and `account_secret` fields in the example below with your own.
+To continue, create an account on http://api.myralabs.com, and copy your API credentials from the `Explore API` tab. You can then replace the empty `account_id` and `account_secret` fields in the example below with your own.
 
-See the `tutorials` directory for a step by step tutorial and examples.
+See the `tutorial` directory for a step by step tutorial and examples.
 
 ## Minimal Example
 

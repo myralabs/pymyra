@@ -98,9 +98,6 @@ The train file has 12 utterances for `create` and 11 for `cancel`. We recommend 
 from pymyra.api import client
 
 # Create the API config object from a configuration object
-
-
-# Create configuration
 config = {
   "account_id": "", # replace with the correct IDs after creating an account
   "account_secret": ""

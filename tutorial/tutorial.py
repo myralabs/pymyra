@@ -19,6 +19,7 @@ api.set_intent_model(INTENT_MODEL_ID)
 
 class Actions(object):
 
+    # Initialize a simple intent to action mapping
     def __init__(self):
         self.intent_map = {
             "cancel": self.cancel_handler,
@@ -35,8 +36,13 @@ class Actions(object):
             intent.score = 1
         return self.intent_map.get(intent.label)(**kwargs)
 
+    # Handler functions for each intent
     def cancel_handler(self, **kwargs):
         api_result = kwargs.get("result")
+
+        # See docs.myralabs.com for more information about entity and intent
+        # API formats.
+
         e = api_result.entities.entity_dict.get("builtin", {})
         message = "Sure, I'll cancel the meeting for you"
         if "PERSON" in e:
