@@ -2,7 +2,7 @@
 
 ## Overview
 
-Myra’s APIs are the best way to build natural language understanding into your applications. They provide tools to identify user intent and extract key data like names, cities, numbers, and custom-defined values.
+Myra’s APIs are the best way to build natural language understanding into your applications. They provide tools to identify user intent, and extract key data like names, cities, numbers, and custom-defined values.
 
 We'll build a simple and state-of-the-art conversational bot that will do this:
 
@@ -32,13 +32,12 @@ cd pymyra
 pip install .
 ```
 
-This will also install a sample configuration file into the following path `$HOME/.pymyra/settings.conf`.
 
 ## Step 2: Configure the SDK with your API credentials
 
 - Register at http://api.myralabs.com/register
-- When your account is opened, you'll receive an email with a link to the dashboard. 
-- Log in to the dashboard and note the `account_id` and `account_secret`. Add those values into the appropriate places in the configuration file at`$HOME/.pymyra/settings.conf`.
+- When your account is opened, you'll receive an email with a link to the dashboard.
+- Log in to the dashboard and note the `account_id` and `account_secret`. Add those values into the appropriate places when initializing the client. See the main README for `pymyra` for a simple example.
 
 
 ## Step 3: Interact with CalendarBot
@@ -65,11 +64,11 @@ calendar_bot>>  I can help create a meeting for you with Jane and Joe at Sat, 22
 
 CalendarBot understands questions about creating and cancelling calendar entries. Later, we'll add the ability to modify entries. (CalendarBot doesn't actually connect to a calendaring service, sorry!)
 
-CalendarBot is connected to pre-trained models that determine the user's intent -- the 'thing' they are trying to accomplish -- and the user's entities -- information in the sentence you need to carry out the user's task. We've included the training data for these models in `tutorial/data/botv1`.
+CalendarBot is connected to pre-trained models that determine the user's intent -- the 'thing' they are trying to accomplish -- and the user's entities -- information in the sentence you need to carry out the user's task. We've included the (sample) training data for these models in `tutorial/data/botv1`.
 
 ### The model
 
-The files are divided into two portions called `train` and `test`. The Myra model will learn based off the sentences in `train` and use the sentences in `test` to evaluate the model's performance on new, unseen data. 
+The files are divided into two portions called `train` and `test`. The Myra model will learn based on the sentences in `train` and use the sentences in `test` to evaluate the model's performance on new, unseen data.
 
 *botv1_train.tsv:*
 ```
@@ -98,13 +97,19 @@ The train file has 12 utterances for `create` and 11 for `cancel`. We recommend 
 ```python
 from pymyra.api import client
 
-# Create the API config object from a configuration file
-# This gets the config from /Users/<username>/.myra/settings.conf
+# Create the API config object from a configuration object
 
-CONF_FILE = join(expanduser('~'), '.pymyra', 'settings.conf')
-config = client.get_config(CONF_FILE)
 
-INTENT_MODEL_ID = "xxxxx"
+# Create configuration
+config = {
+  "account_id": "", # replace with the correct IDs after creating an account
+  "account_secret": ""
+}
+
+api = client.connect(config)
+
+# This is the demo model that ships with new Myra accounts.
+INTENT_MODEL_ID = "xxxxx" # **_TBD: Greg to add_**
 
 # Establish a global API connection
 api = client.connect(config)
@@ -162,7 +167,7 @@ Next, we define each handler function. Here's the code for the `cancel_handler`:
 The function gets the result of the Myra API, and fetches the detected entities into `e`. If it finds a mention of a person and a time, it will include those in the response message.
 
 ## Step 5: Train and extend CalendarBot to handle something new
-Now, let's add the ability to modify meetings to the Myra API and then to the bot. 
+Now, let's add the ability to modify meetings to the Myra API and then to the bot.
 
 ### Train the model to recognize the modify intent
 In `tutorial/data/botv2`, we've included new utterances for the intent `modify`. Check them out now:
@@ -174,10 +179,11 @@ change the time of the meeting with deepak	modify
 do the meeting with Jane at 1pm instead	modify
 switch the 1:1 to 9am on tuesday	modify
 ```
-The model was pretrained for the `create` and `cancel` intents; now, we'll upload and train the model ourselves to add the `modify` intent. To do so, go to the "Intent Models" section of the Myra dashboard. 
+The model was pretrained for the `create` and `cancel` intents; now, we'll upload and train the model ourselves to add the `modify` intent. To do so, go to the "Intent Models" section of the Myra dashboard.
+
 * Create a new model named `tutorial_botv2` and click the green plus icon.
-* Upload `botv2_train.tsv` into the Train section and `botv2_test.tsv` into the Test section, and hit Save and Train.
-* The model will take a few minutes to train. Once the status says 'Ready', copy the intent model's ID over to `INTENT_MODEL_ID` in `tutorial.py`. 
+* Upload `botv2_train.tsv` into the Train section and `botv2_test.tsv` into the Test section, and hit Save and then Train.
+* The model will take a few minutes to train. Once the status says 'Ready', copy the intent model's ID over to `INTENT_MODEL_ID` in `tutorial.py`.
 
 ### Add modify to the bot
 Create a new entry in `self.intent_map` in the `Actions` class:
@@ -212,12 +218,7 @@ Next, define a new function called `modify_handler` in the `Actions` class.
 
 ```
 
-Run `tutorial.py` again, and ask the bot: "change my meeting with Scott to Tuesday", or whatever you want! Now, you have a bot that you've taught to understand complex input related to creating, modifying, and cancelling meetings. 
-
-
-```
-# update me
-```
+Run `tutorial.py` again, and ask the bot: "change my meeting with Scott to Tuesday", or whatever you want! Now, you have a bot that you've taught to understand complex input related to creating, modifying, and cancelling meetings.
 
 ## Next steps
 

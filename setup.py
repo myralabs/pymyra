@@ -1,5 +1,3 @@
-# pymyra installation and build/release
-
 import os
 import sys
 from os import chdir, system
@@ -44,6 +42,5 @@ setup(
     keywords="artificial intelligence nlp api myra machine learning",
     cmdclass={"build_py": build_py},
     install_requires=install_requires,
-    packages=find_packages(),
-    data_files=[(os.path.expanduser("~") + "/.pymyra", ["pymyra/settings.conf"])]
+    packages=find_packages()
 )

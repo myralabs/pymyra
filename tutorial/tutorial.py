@@ -5,11 +5,13 @@ from pymyra.api import client
 
 # Create the API config object from a configuration object
 config = {
-  "account_id": "",
-  "account_secret": ""
+    "account_id": "",
+    "account_secret": ""
 }
 
+# Get from the Myra dashboard
 INTENT_MODEL_ID = "xxxxxxxxx"
+
 # Establish a global API connection
 api = client.connect(config)
 api.set_intent_model(INTENT_MODEL_ID)
