@@ -1,0 +1,38 @@
+utterance	intent
+meeting with kevin and john next tuesday 5pm	create
+hang next week	create
+let's meet up next week sometime	create
+meeting with the team 10/24 in Guitar Hero	create
+let's get everybody together	create
+create a new meeting with viksit and nishant	create
+add a new meeting with anton	create
+let's do it next wednesday 3pm?	create
+meeting with bob and jane on november 3rd	create
+one on one with Jane that recurs every monday at 11am	create
+recurring meeting with the team every day at 10am	create
+book mtg with sean 3pm	create
+cancel the meeting with kevin	cancel
+cancel my meetings today	cancel
+clear my schedule today	cancel
+clear my schedule next week	cancel
+remove the 4pm meeting	cancel
+delete the 1:1 with peter	cancel
+cancel 3pm	cancel
+remove the meeting 3pm 10/25	cancel
+cancel all my meetings with christine	cancel
+cancel all my meetings with christine and tom	cancel
+clear my saturday	cancel
+add steve to the 3pm	modify
+modify my meeting with anton to 5pm	modify
+change my next meeting to a call	modify
+add steve and peter to the meeting with Deloitte next friday	modify
+add steve and peter to the meeting with Deloitte	modify
+change my 3pm to a call	modify
+adjust the 5pm meeting to 4:15	modify
+remove bob from the call with Accenture	modify
+push the call with deepak to monday	modify
+change the time of the meeting with deepak	modify
+do the meeting with Jane at 1pm instead	modify
+switch the 1:1 to 9am on tuesday	modify
+change the 1:1 to monday 3:45	modify
+change the 1:1 with Deepak to weds 4pm	modify

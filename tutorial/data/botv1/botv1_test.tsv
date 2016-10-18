@@ -1,0 +1,9 @@
+utterance	intent
+meet with steve and andy on weds	create
+get together next friday	create
+dinner on oct 25	create
+set a meeting with everyone at 5pm	create
+cancel the meeting with steve	cancel
+remove the event with bob	cancel
+delete the meeting with the DME team	cancel
+let's skip the meeting with sean	cancel
