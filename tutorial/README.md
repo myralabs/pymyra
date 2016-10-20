@@ -46,7 +46,7 @@ Meet CalendarBot! Ask it a question about creating or cancelling meetings.
 
 python tutorial.py
 
-**calendar_bot>>  Welcome to calendar bot! I can help you create and cancel meetings. Try 'set up a meeting with Jane' or 'cancel my last meeting' to get started.**
+calendar_bot>>  Welcome to calendar bot! I can help you create and cancel meetings. Try 'set up a meeting with Jane' or 'cancel my last meeting' to get started.
 
 > cancel Jane's meeting with me tomorrow at 9pm
 calendar_bot>>  Sure, I'll cancel the meeting for you with Jane at Mon, 17 Oct 2016 21:00:00 GMT.
