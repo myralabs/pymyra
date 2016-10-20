@@ -60,13 +60,13 @@ calendar_bot>>  I can help create a meeting for you with Jane and Joe at Sat, 22
 
 CalendarBot understands questions about creating and cancelling calendar entries. Later, we'll add the ability to modify entries. (CalendarBot doesn't actually connect to a calendaring service, sorry!)
 
-CalendarBot is connected to pre-trained models that determine the user's intent -- the 'thing' they are trying to accomplish -- and the user's entities -- information in the sentence you need to carry out the user's task. We've included the (sample) training data for these models in `tutorial/data/botv1`.
+CalendarBot is connected to pre-trained models that determine the user's intent -- the 'thing' they are trying to accomplish -- and the user's entities -- information in the sentence you need to carry out the user's task. We've included the (sample) training data for these models in [`tutorial/data/botv1`](https://github.com/myralabs/pymyra/tree/master/tutorial/data/botv1).
 
 ### The model
 
 The files are divided into two portions called `train` and `test`. The Myra model will learn based on the sentences in `train` and use the sentences in `test` to evaluate the model's performance on new, unseen data.
 
-*botv1_train.tsv:*
+*[botv1_train.tsv](https://github.com/myralabs/pymyra/blob/master/tutorial/data/botv1/botv1_train.tsv):*
 ```
 utterance	intent
 meeting with Kevin and John next tuesday 5pm	create
@@ -76,7 +76,7 @@ meeting with the team 10/24 in Guitar Hero	create
 let's get everybody together	create
 ...
 ```
-*botv1_test.tsv:*
+*[botv1_test.tsv](https://github.com/myralabs/pymyra/blob/master/tutorial/data/botv1/botv1_test.tsv):*
 ```
 utterance	intent
 meet with steve and andy on weds	create
@@ -163,9 +163,9 @@ The function gets the result of the Myra API, and fetches the detected entities 
 Now, let's add the ability to modify meetings to the Myra API and then to the bot.
 
 ### Train the model to recognize the modify intent
-In `tutorial/data/botv2`, we've included new utterances for the intent `modify`. Check them out now:
+In [`tutorial/data/botv2`](https://github.com/myralabs/pymyra/tree/master/tutorial/data/botv2), we've included new utterances for the intent `modify`. Check them out now:
 
-*botv2_train.tsv:*
+*[botv2_train.tsv](https://github.com/myralabs/pymyra/blob/master/tutorial/data/botv2/botv2_train.tsv):*
 ```
 ...
 change the time of the meeting with deepak	modify
@@ -211,7 +211,7 @@ Next, define a new function called `modify_handler` in the `Actions` class.
 
 ```
 
-Run `tutorial.py` again, and ask the bot: "change my meeting with Scott to Tuesday", or whatever you want! Now, you have a bot that you've taught to understand complex input related to creating, modifying, and cancelling meetings.
+Run [`tutorial.py`](https://github.com/myralabs/pymyra/blob/master/tutorial/tutorial.py) again, and ask the bot: "change my meeting with Scott to Tuesday", or whatever you want! Now, you have a bot that you've taught to understand complex input related to creating, modifying, and cancelling meetings.
 
 ## Next steps
 
