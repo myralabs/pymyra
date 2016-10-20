@@ -26,6 +26,8 @@ See the `tutorial` directory for a step by step tutorial and examples.
 
 ## Minimal Example
 
+Put this in `test.py`:
+
 ```python
 from pymyra.api import client
 
@@ -45,7 +47,64 @@ api.set_entity_model("aababb")  # Fill in entity model id from dashboard.
 # Get results
 result = api.get("whats a good coffee shop in the mission?")
 
-print("Intent: ", result.intent.label, result.intent.score)
-print("Entities; ", result.entities.entity_dict)
+print("Intent is '%s' with confidence %s" % (result.intent.label, result.intent.score))
+print("Entities: %s" % result.entities.entity_dict)
 
+```
+
+and you'll get
+
+```json
+$ python test.py 
+Sentence: Create a meeting with Alan Turing and Von Neumann next friday at 10am in Princeton
+Inferred intent is 'create' with confidence 0.885836362839
+Recognized entities are:
+{
+    "status": {
+        "status_code": 200
+    }, 
+    "builtin": {
+        "DATE": [
+            {
+                "date": "Fri, 28 Oct 2016 10:00:00 GMT", 
+                "start": 9, 
+                "end": 12, 
+                "label": "next friday at 10am"
+            }
+        ], 
+        "GPE": [
+            {
+                "start": 15, 
+                "text": "Princeton", 
+                "end": 16, 
+                "label": "GPE"
+            }
+        ], 
+        "TIME": [
+            {
+                "start": 12, 
+                "text": "10am", 
+                "end": 14, 
+                "label": "TIME"
+            }
+        ], 
+        "search_query": "Create meeting Alan Turing Von Neumann next friday 10 am Princeton", 
+        "PERSON": [
+            {
+                "start": 4, 
+                "text": "Alan Turing", 
+                "end": 6, 
+                "label": "PERSON"
+            }, 
+            {
+                "start": 7, 
+                "text": "Von Neumann", 
+                "end": 9, 
+                "label": "PERSON"
+            }
+        ]
+    }, 
+    "user_defined": {}
+}
+$
 ```
