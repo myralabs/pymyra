@@ -6,7 +6,7 @@ Myra’s APIs are the best way to build natural language understanding into your
 
 We'll build a simple and state-of-the-art conversational bot that will do this:
 
-```bash
+```
 
 > cancel my meeting with Jane tomorrow at 9pm
 >>  Sure, I'll cancel the meeting for you with Jane at Mon, 17 Oct 2016 21:00:00 GMT.
@@ -20,7 +20,7 @@ We'll build a simple and state-of-the-art conversational bot that will do this:
 
 `pymyra` provides access to the Myra RESTful APIs. It currently supports `python 2.7`. To install pymyra as well as download the data for the tutorial, run:
 
-```bash
+```
 git clone https://github.com/myralabs/pymyra
 cd pymyra
 pip install .
@@ -40,11 +40,11 @@ In the `pymyra` source directory, go to `tutorial/` and run `python tutorial.py`
 
 Meet CalendarBot! Ask it a question about creating or cancelling meetings.
 
-```bash
+```
 
 python tutorial.py
 
-calendar_bot>>  Welcome to calendar bot! I can help you create and cancel meetings. Try 'set up a meeting with Jane' or 'cancel my last meeting' to get started.
+**calendar_bot>>  Welcome to calendar bot! I can help you create and cancel meetings. Try 'set up a meeting with Jane' or 'cancel my last meeting' to get started.**
 
 > cancel Jane's meeting with me tomorrow at 9pm
 calendar_bot>>  Sure, I'll cancel the meeting for you with Jane at Mon, 17 Oct 2016 21:00:00 GMT.
