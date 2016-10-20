@@ -18,7 +18,7 @@ We'll build a simple and state-of-the-art conversational bot that will do this:
 
 ## Step 1: Install the SDK and the tutorial files
 
-`pymyra` provides access to the Myra RESTful APIs. It currently supports `python 2.7`. To install pymyra as well as download the data for the tutorial, run:
+[`pymyra`](https://https://github.com/myralabs/pymyra/) provides access to the Myra RESTful APIs. It currently supports `python 2.7`. To install pymyra as well as download the data for the tutorial, run:
 
 ```
 git clone https://github.com/myralabs/pymyra
@@ -36,7 +36,7 @@ pip install .
 
 ## Step 3: Interact with CalendarBot
 
-In the `pymyra` source directory, go to `tutorial/` and run `python tutorial.py`.
+In the [`pymyra`](https://github.com/myralabs/pymyra/) source directory, go to [`tutorial/`](https://github.com/myralabs/pymyra/tree/master/tutorial) and run `python tutorial.py`.
 
 Meet CalendarBot! Ask it a question about creating or cancelling meetings.
 
