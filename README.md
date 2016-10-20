@@ -26,30 +26,24 @@ See the `tutorial` directory for a step by step tutorial and examples.
 
 ## Minimal Example
 
-```
+```python
 from pymyra.api import client
 
-sentence = "whats a good coffee shop in the mission?"
-
-# Create configuration
+# Connect API
 config = {
-  "account_id": "", # replace with the correct IDs after creating an account
+  "account_id": "",  # Replace with the correct IDs after creating an account.
   "account_secret": ""
 }
-
-# Connect API
 api = client.connect(config)
 
 # Set intent model
-im = "xxxyyy"
-api.set_intent_model(im)
+api.set_intent_model("xxxyyy")  # Fill in intent model id from dashboard.
 
 # Set entity model
-em = "aababb"
-api.set_entity_model(em)
+api.set_entity_model("aababb")  # Fill in entity model id from dashboard.
 
 # Get results
-result = api.get(sentence)
+result = api.get("whats a good coffee shop in the mission?")
 
 print("Intent: ", result.intent.label, result.intent.score)
 print("Entities; ", result.entities.entity_dict)
