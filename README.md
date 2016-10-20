@@ -30,26 +30,28 @@ Put this in `test.py`:
 
 ```python
 from pymyra.api import client
+import json
 
 # Connect API
 config = {
-  "account_id": "",  # Replace with the correct IDs after creating an account.
-  "account_secret": ""
+  "account_id": "...",  # Replace with the correct IDs after creating an account.
+  "account_secret": "..."
 }
 api = client.connect(config)
 
 # Set intent model
-api.set_intent_model("xxxyyy")  # Fill in intent model id from dashboard.
+api.set_intent_model("...")  # Fill in intent model id from dashboard.
 
 # Set entity model
-api.set_entity_model("aababb")  # Fill in entity model id from dashboard.
+api.set_entity_model("...")  # Fill in entity model id from dashboard.
 
 # Get results
-result = api.get("whats a good coffee shop in the mission?")
+sentence = "Create a meeting with Alan Turing and Von Neumann next friday at 10am in Princeton"
+result = api.get(sentence)
 
-print("Intent is '%s' with confidence %s" % (result.intent.label, result.intent.score))
-print("Entities: %s" % result.entities.entity_dict)
-
+print("Sentence: %s" % sentence)
+print("Inferred intent is '%s' with confidence %s" % (result.intent.label, result.intent.score))
+print("Recognized entities are:\n%s" % json.dumps(result.entities.entity_dict, indent=4))
 ```
 
 and you'll get
