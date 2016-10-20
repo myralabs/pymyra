@@ -22,7 +22,7 @@ pip install .
 
 To continue, create an account on http://api.myralabs.com, and copy your API credentials from the `Explore API` tab. You can then replace the empty `account_id` and `account_secret` fields in the example below with your own.
 
-See the `tutorial` directory for a step by step tutorial and examples.
+See the [`tutorial`](https://github.com/myralabs/pymyra/tree/master/tutorial) directory for a step by step tutorial and examples.
 
 ## Minimal Example
 
@@ -54,7 +54,7 @@ print("Inferred intent is '%s' with confidence %s" % (result.intent.label, resul
 print("Recognized entities are:\n%s" % json.dumps(result.entities.entity_dict, indent=4))
 ```
 
-and you'll get
+and you'll get:
 
 ```json
 $ python test.py 
