@@ -26,32 +26,87 @@ See the `tutorial` directory for a step by step tutorial and examples.
 
 ## Minimal Example
 
-```
+Put this in `test.py`:
+
+```python
 from pymyra.api import client
-
-sentence = "whats a good coffee shop in the mission?"
-
-# Create configuration
-config = {
-  "account_id": "", # replace with the correct IDs after creating an account
-  "account_secret": ""
-}
+import json
 
 # Connect API
+config = {
+  "account_id": "...",  # Replace with the correct IDs after creating an account.
+  "account_secret": "..."
+}
 api = client.connect(config)
 
 # Set intent model
-im = "xxxyyy"
-api.set_intent_model(im)
+api.set_intent_model("...")  # Fill in intent model id from dashboard.
 
 # Set entity model
-em = "aababb"
-api.set_entity_model(em)
+api.set_entity_model("...")  # Fill in entity model id from dashboard.
 
 # Get results
+sentence = "Create a meeting with Alan Turing and Von Neumann next friday at 10am in Princeton"
 result = api.get(sentence)
 
-print("Intent: ", result.intent.label, result.intent.score)
-print("Entities; ", result.entities.entity_dict)
+print("Sentence: %s" % sentence)
+print("Inferred intent is '%s' with confidence %s" % (result.intent.label, result.intent.score))
+print("Recognized entities are:\n%s" % json.dumps(result.entities.entity_dict, indent=4))
+```
 
+and you'll get
+
+```json
+$ python test.py 
+Sentence: Create a meeting with Alan Turing and Von Neumann next friday at 10am in Princeton
+Inferred intent is 'create' with confidence 0.885836362839
+Recognized entities are:
+{
+    "status": {
+        "status_code": 200
+    }, 
+    "builtin": {
+        "DATE": [
+            {
+                "date": "Fri, 28 Oct 2016 10:00:00 GMT", 
+                "start": 9, 
+                "end": 12, 
+                "label": "next friday at 10am"
+            }
+        ], 
+        "GPE": [
+            {
+                "start": 15, 
+                "text": "Princeton", 
+                "end": 16, 
+                "label": "GPE"
+            }
+        ], 
+        "TIME": [
+            {
+                "start": 12, 
+                "text": "10am", 
+                "end": 14, 
+                "label": "TIME"
+            }
+        ], 
+        "search_query": "Create meeting Alan Turing Von Neumann next friday 10 am Princeton", 
+        "PERSON": [
+            {
+                "start": 4, 
+                "text": "Alan Turing", 
+                "end": 6, 
+                "label": "PERSON"
+            }, 
+            {
+                "start": 7, 
+                "text": "Von Neumann", 
+                "end": 9, 
+                "label": "PERSON"
+            }
+        ]
+    }, 
+    "user_defined": {}
+}
+$
 ```
