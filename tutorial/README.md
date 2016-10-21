@@ -4,9 +4,9 @@
 
 Myra’s APIs are the best way to build natural language understanding into your applications. They provide tools to identify user intent, and extract key data like names, cities, numbers, and custom-defined values.
 
-If you're not a Python programmer, check out the "Model training workflow" document to learn how to train our REST APIs for your use.
+If you're not a Python programmer, check out [Model training workflow](http://docs.myralabs.com/v1.0/reference#overview-and-installation) document to learn how to use our REST APIs.
 
-We'll build a simple and state-of-the-art conversational bot that will do this:
+In this tutorial, we'll build a simple and state-of-the-art conversational bot in Python that will do this:
 
 ```
 
