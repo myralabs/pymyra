@@ -1,6 +1,8 @@
 # pymyra
 
-The Python SDK for the Myra Conversational AI REST API.
+The Python SDK for the Myra Conversational AI REST API. Myra's APIs are trained on over a billion news articles, conversational logs, and targeted web pages, and are paired with the latest AI research to deliver industry-leading intent parsing and entity extraction.
+
+[Sign up for an account](http://api.myralabs.com/register).
 
 ## Install
 
