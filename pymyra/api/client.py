@@ -252,5 +252,5 @@ class InferenceClient(object):
         entities = self._extract_entities(d)
         ir = InferenceResult(intent, score, entities, d)
         #log.debug("returning InferenceResult: %s, ir.api_response: %s",
-                  ir, ir.api_response)
+        #          ir, ir.api_response)
         return ir
