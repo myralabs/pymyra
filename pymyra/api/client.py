@@ -66,9 +66,9 @@ class MyraConfig(object):
 
 # Logging and debug utilities
 http_client.HTTPConnection.debuglevel = 0
-logging.basicConfig()
+#logging.basicConfig()
 log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
+#log.setLevel(logging.INFO)
 
 def set_debug():
     http_client.HTTPConnection.debuglevel = 1
@@ -119,25 +119,29 @@ class EntityResult(object):
 
 class InferenceResult(object):
 
-    def __init__(self, intent_label=None, intent_score=None, entities=None):
+    def __init__(self, intent_label=None, intent_score=None, entities=None,
+                 api_response=None):
         self.intent = IntentResult(intent_label, intent_score)
         self.entities = EntityResult(entities)
+        self.api_response = api_response
 
     def __repr__(self):
-        return "intent: %s\nentities: %s" % (
-            self.intent, self.entities)
+        return "InferenceResult: {intent:%s} {entities:%s} {api_response: %s}" % (
+            self.intent, self.entities, self.api_response)
 
 class InferenceClient(object):
     def __init__(
             self,
             account_id, account_secret,
             intent_model_id=None, entity_model_id=None,
-            myra_api_server=None, myra_api_version=None):
+            myra_api_server=None, myra_api_version=None,
+            params=None):
 
         self.account_id = account_id
         self.account_secret = account_secret
         self.intent_model_id = intent_model_id
         self.entity_model_id = entity_model_id
+        self.params = params
 
         if myra_api_server:
             self.hostname = myra_api_server
@@ -160,13 +164,16 @@ class InferenceClient(object):
             "X-ACCOUNT-SECRET": self.account_secret
         }
 
-    def _get(self, text, intent_model_id, entity_model_id):
+    def _get(self, text, intent_model_id, entity_model_id,
+             outlier_cutoff=None):
         url = "http://%s/api/%s/parse?text=%s" % (
             self.hostname, self.api_version, text)
         if intent_model_id:
             url += "&intent_model_id=%s" % (intent_model_id,)
         if entity_model_id:
             url += "&entity_model_id=%s" % (entity_model_id,)
+        if outlier_cutoff:
+            url += "&outlier_cutoff=%s" % (outlier_cutoff,)
         log.debug("url: %s", url)
         r = self._session.get(url)
         if r.status_code != 200:
@@ -176,8 +183,10 @@ class InferenceClient(object):
         log.debug("r.json: %s", r.json())
         return r.json()
 
-    def _get_dict(self, text, intent_model_id, entity_model_id):
-        js = self._get(text, intent_model_id, entity_model_id)
+    def _get_dict(self, text, intent_model_id, entity_model_id,
+                  outlier_cutoff=None):
+        js = self._get(text, intent_model_id, entity_model_id,
+                       outlier_cutoff)
         log.debug(">>> js: %s", js)
         return js
 
@@ -205,6 +214,9 @@ class InferenceClient(object):
     def set_intent_model(self, intent_model_id):
         self.intent_model_id = intent_model_id
 
+    def set_params(self, params):
+        self.params = params
+
     def set_entity_model(self, entity_model_id):
         self.entity_model_id = entity_model_id
 
@@ -222,13 +234,23 @@ class InferenceClient(object):
         e = self._extract_entities(d)
         return EntityResult(e)
 
-    def get(self, text, intent_model_id=None, entity_model_id=None):
+    def get(self, text, intent_model_id=None, entity_model_id=None,
+            outlier_cutoff=None):
+        log.debug("InferenceClient.get(%s)", locals())
         if not entity_model_id:
             entity_model_id = self.entity_model_id
         if not intent_model_id:
             intent_model_id = self.intent_model_id
-        d = self._get_dict(text, intent_model_id, entity_model_id)
+        if (not outlier_cutoff and self.params
+            and self.params.get("outlier_cutoff")):
+            outlier_cutoff = self.params.get("outlier_cutoff")
+        d = self._get_dict(text, intent_model_id, entity_model_id,
+                           outlier_cutoff)
+        #log.debug("pymyra.client.get.d: %s", d)
         (intent, score) = self._extract_intent(d)
 
         entities = self._extract_entities(d)
-        return InferenceResult(intent, score, entities)
+        ir = InferenceResult(intent, score, entities, d)
+        #log.debug("returning InferenceResult: %s, ir.api_response: %s",
+                  ir, ir.api_response)
+        return ir
