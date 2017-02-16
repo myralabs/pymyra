@@ -5,6 +5,7 @@ import json
 import logging
 from os.path import expanduser, join
 import ConfigParser
+import urllib
 try:
     import http.client as http_client
 except ImportError:
@@ -165,7 +166,7 @@ class InferenceClient(object):
         }
 
     def _get(self, text, intent_model_id, entity_model_id,
-             outlier_cutoff=None):
+             outlier_cutoff=None, url_params=None):
         url = "http://%s/api/%s/parse?text=%s" % (
             self.hostname, self.api_version, text)
         if intent_model_id:
@@ -174,6 +175,8 @@ class InferenceClient(object):
             url += "&entity_model_id=%s" % (entity_model_id,)
         if outlier_cutoff:
             url += "&outlier_cutoff=%s" % (outlier_cutoff,)
+        if url_params:
+            url += "&%s" % (urllib.urlencode(url_params, doseq=True),)
         log.debug("url: %s", url)
         r = self._session.get(url)
         if r.status_code != 200:
@@ -184,9 +187,9 @@ class InferenceClient(object):
         return r.json()
 
     def _get_dict(self, text, intent_model_id, entity_model_id,
-                  outlier_cutoff=None):
+                  outlier_cutoff=None, url_params=None):
         js = self._get(text, intent_model_id, entity_model_id,
-                       outlier_cutoff)
+                       outlier_cutoff, url_params)
         log.debug(">>> js: %s", js)
         return js
 
@@ -223,7 +226,7 @@ class InferenceClient(object):
     def get_intent(self, text, intent_model_id=None):
         if not intent_model_id:
             intent_model_id = self.intent_model_id
-        d = self._get_dict(text, intent_model_id, None)
+        d = self._get_dict(text, intent_model_id)
         (intent, score) = self._extract_intent(d)
         return IntentResult(intent, score)
 
@@ -235,7 +238,7 @@ class InferenceClient(object):
         return EntityResult(e)
 
     def get(self, text, intent_model_id=None, entity_model_id=None,
-            outlier_cutoff=None):
+            outlier_cutoff=None, url_params=None):
         log.debug("InferenceClient.get(%s)", locals())
         if not entity_model_id:
             entity_model_id = self.entity_model_id
@@ -245,7 +248,7 @@ class InferenceClient(object):
             and self.params.get("outlier_cutoff")):
             outlier_cutoff = self.params.get("outlier_cutoff")
         d = self._get_dict(text, intent_model_id, entity_model_id,
-                           outlier_cutoff)
+                           outlier_cutoff, url_params)
         #log.debug("pymyra.client.get.d: %s", d)
         (intent, score) = self._extract_intent(d)
 
