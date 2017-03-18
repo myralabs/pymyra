@@ -4,8 +4,6 @@
 
 Myra’s APIs are the best way to build natural language understanding into your applications. They provide tools to identify user intent, and extract key data like names, cities, numbers, and custom-defined values.
 
-If you're not a Python programmer, check out [Model training workflow](http://docs.myralabs.com/v1.0/reference#overview-and-installation) document to learn how to use our REST APIs.
-
 In this tutorial, we'll build a simple and state-of-the-art conversational bot in Python that will do this:
 
 ```
@@ -31,8 +29,6 @@ pip install .
 
 ## Step 2: Configure the SDK with your API credentials
 
-- Register at http://api.myralabs.com/register
-- When your account is opened, you'll be able to [log in here](http://api.myralabs.com/login/).
 - Log in to the dashboard and note the `account_id` and `account_secret`. Add those values here in `tutorial.py`:
 
 ```
