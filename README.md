@@ -2,8 +2,6 @@
 
 The Python SDK for the Myra Conversational AI REST API. Myra's APIs are trained on over a billion news articles, conversational logs, and targeted web pages, and are paired with the latest AI research to deliver industry-leading intent parsing and entity extraction.
 
-[Sign up for an account](http://api.myralabs.com/register).
-
 ## Install
 
 Using `pip`:
@@ -22,7 +20,7 @@ pip install .
 
 `pymyra` provides access to the Myra RESTful APIs. It currently supports `Python 2.7`.
 
-To continue, create an account on http://api.myralabs.com, and copy your API credentials from the `Explore API` tab. You can then replace the empty `account_id` and `account_secret` fields in the example below with your own.
+To continue, copy your API credentials from the `Explore API` tab. You can then replace the empty `account_id` and `account_secret` fields in the example below with your own.
 
 See the [`tutorial`](https://github.com/myralabs/pymyra/tree/master/tutorial) directory for a step by step tutorial and examples.
 
