@@ -137,7 +137,7 @@ class InferenceClient(object):
             intent_model_id=None, entity_model_id=None,
             myra_api_server=None, myra_api_version=None,
             params=None):
-
+        log.debug("InferenceClient.__init__(%s)", locals())
         self.account_id = account_id
         self.account_secret = account_secret
         self.intent_model_id = intent_model_id
@@ -166,7 +166,8 @@ class InferenceClient(object):
         }
 
     def _get(self, text, intent_model_id, entity_model_id,
-             outlier_cutoff=None, url_params=None):
+             outlier_cutoff=None, url_params=None, outlier_frac=None):
+        log.debug("_get(%s)", locals())
         url = "http://%s/api/%s/parse?text=%s" % (
             self.hostname, self.api_version, text)
         if intent_model_id:
@@ -175,6 +176,9 @@ class InferenceClient(object):
             url += "&entity_model_id=%s" % (entity_model_id,)
         if outlier_cutoff:
             url += "&outlier_cutoff=%s" % (outlier_cutoff,)
+        if outlier_frac:
+            url += "&outlier_frac=%s" % (outlier_frac,)
+
         if url_params:
             url += "&%s" % (urllib.urlencode(url_params, doseq=True),)
         log.debug("url: %s", url)
@@ -187,9 +191,10 @@ class InferenceClient(object):
         return r.json()
 
     def _get_dict(self, text, intent_model_id, entity_model_id,
-                  outlier_cutoff=None, url_params=None):
+                  outlier_cutoff=None, url_params=None, outlier_frac=None):
+        log.debug("_get_dict(%s)", locals())
         js = self._get(text, intent_model_id, entity_model_id,
-                       outlier_cutoff, url_params)
+                       outlier_cutoff, url_params, outlier_frac)
         log.debug(">>> js: %s", js)
         return js
 
@@ -219,14 +224,24 @@ class InferenceClient(object):
 
     def set_params(self, params):
         self.params = params
+        log.debug("setting params: %s", self.params)
 
     def set_entity_model(self, entity_model_id):
         self.entity_model_id = entity_model_id
 
-    def get_intent(self, text, intent_model_id=None):
+    def get_intent(self, text, intent_model_id=None,
+                   outlier_cutoff=None, url_params=None, outlier_frac=None):
+        log.debug("InferenceClient.get_intent(%s)", locals())
         if not intent_model_id:
             intent_model_id = self.intent_model_id
-        d = self._get_dict(text, intent_model_id)
+        if (not outlier_cutoff and self.params
+            and self.params.get("outlier_cutoff")):
+            outlier_cutoff = self.params.get("outlier_cutoff")
+        if (not outlier_frac and self.params
+            and self.params.get("outlier_frac")):
+            outlier_frac = self.params.get("outlier_frac")
+        d = self._get_dict(text, intent_model_id, None,
+                           outlier_cutoff, url_params, outlier_frac)
         (intent, score) = self._extract_intent(d)
         return IntentResult(intent, score)
 
@@ -238,7 +253,7 @@ class InferenceClient(object):
         return EntityResult(e)
 
     def get(self, text, intent_model_id=None, entity_model_id=None,
-            outlier_cutoff=None, url_params=None):
+            outlier_cutoff=None, url_params=None, outlier_frac=None):
         log.debug("InferenceClient.get(%s)", locals())
         if not entity_model_id:
             entity_model_id = self.entity_model_id
@@ -247,8 +262,11 @@ class InferenceClient(object):
         if (not outlier_cutoff and self.params
             and self.params.get("outlier_cutoff")):
             outlier_cutoff = self.params.get("outlier_cutoff")
+        if (not outlier_frac and self.params
+            and self.params.get("outlier_frac")):
+            outlier_frac = self.params.get("outlier_frac")
         d = self._get_dict(text, intent_model_id, entity_model_id,
-                           outlier_cutoff, url_params)
+                           outlier_cutoff, url_params, outlier_frac)
         #log.debug("pymyra.client.get.d: %s", d)
         (intent, score) = self._extract_intent(d)
 
