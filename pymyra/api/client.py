@@ -268,7 +268,10 @@ class InferenceClient(object):
         d = self._get_dict(text, intent_model_id, entity_model_id,
                            outlier_cutoff, url_params, outlier_frac)
         #log.debug("pymyra.client.get.d: %s", d)
-        (intent, score) = self._extract_intent(d)
+        intent = None
+        score = None
+        if intent_model_id:
+            (intent, score) = self._extract_intent(d)
 
         entities = self._extract_entities(d)
         ir = InferenceResult(intent, score, entities, d)
