@@ -180,13 +180,13 @@ class InferenceClient(object):
         if url_params:
             _params.update(url_params)
         url += "&%s" % (urllib.urlencode(_params, doseq=True),)
-        log.debug("url: %s", url)
+        log.info("API CALL url: %s", url)
         r = self._session.get(url)
         if r.status_code != 200:
             print(r.__dict__)
             raise InferenceClientError(
                 "Error: status_code %s" % (r.status_code,))
-        log.debug("r.json: %s", r.json())
+        log.info("API RETURN r.json: %s", r.json())
         return r.json()
 
     def _get_dict(self, text, intent_model_id, entity_model_id,
