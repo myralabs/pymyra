@@ -12,6 +12,8 @@ except ImportError:
     # Python 2
     import httplib as http_client
 
+from . import messages
+from . import client_base
 
 #####################################
 # Utilities for the Myra API tutorial
@@ -103,34 +105,9 @@ def connect(config, debug=False):
 class InferenceClientError(Exception):
     pass
 
-class IntentResult(object):
-    def __init__(self, label, score):
-        self.label = label
-        self.score = score
 
-    def __repr__(self):
-        return "label: %s, score: %s" % (self.label, self.score)
 
-class EntityResult(object):
-    def __init__(self, entities):
-        self.entity_dict = entities
-
-    def __repr__(self):
-        return "entity_dict: %s" % (self.entity_dict,)
-
-class InferenceResult(object):
-
-    def __init__(self, intent_label=None, intent_score=None, entities=None,
-                 api_response=None):
-        self.intent = IntentResult(intent_label, intent_score)
-        self.entities = EntityResult(entities)
-        self.api_response = api_response
-
-    def __repr__(self):
-        return "InferenceResult: {intent:%s} {entities:%s} {api_response: %s}" % (
-            self.intent, self.entities, self.api_response)
-
-class InferenceClient(object):
+class InferenceClient(client_base.InferenceClientBase):
     def __init__(
             self,
             account_id, account_secret,
@@ -197,25 +174,6 @@ class InferenceClient(object):
         log.debug(">>> js: %s", js)
         return js
 
-    def _extract_intent(self, response_dict):
-        """d: dict representing returned json
-        """
-        i = response_dict.get("result",{}).get("intents",{})
-        status_code = i.get("status",{}).get("status_code")
-        if not status_code or status_code != 200:
-            return None
-        d = i.get("user_defined",{})
-        intent = d.get("intent")
-        score = d.get("score")
-        return (intent, score)
-
-    def _extract_entities(self, response_dict):
-        i = response_dict.get("result", {}).get("entities")
-        status_code = i.get("status",{}).get("status_code")
-        if status_code and status_code != 200:
-            return None
-        return i
-
     # Public API
 
     def set_intent_model(self, intent_model_id):
@@ -235,15 +193,15 @@ class InferenceClient(object):
             intent_model_id = self.intent_model_id
         d = self._get_dict(text, intent_model_id, None,
                            url_params)
-        (intent, score) = self._extract_intent(d)
-        return IntentResult(intent, score)
+        (intent, score) = self._extract_intent(d.get("result"))
+        return messages.IntentResult(intent, score)
 
     def get_entities(self, text, entity_model_id=None):
         if not entity_model_id:
             entity_model_id = self.entity_model_id
         d = self._get_dict(text, None, entity_model_id)
-        e = self._extract_entities(d)
-        return EntityResult(e)
+        e = self._extract_entities(d.get("result"))
+        return messages.EntityResult(e)
 
     def get(self, text, intent_model_id=None, entity_model_id=None,
             url_params=None):
@@ -257,11 +215,12 @@ class InferenceClient(object):
         #log.debug("pymyra.client.get.d: %s", d)
         intent = None
         score = None
-        if intent_model_id:
-            (intent, score) = self._extract_intent(d)
-
-        entities = self._extract_entities(d)
-        ir = InferenceResult(intent, score, entities, d)
+        entities = None
+        if d:
+            if intent_model_id:
+                (intent, score) = self._extract_intent(d.get("result"))
+            entities = self._extract_entities(d.get("result"))
+        ir = messages.InferenceResult(intent, score, entities, d)
         #log.debug("returning InferenceResult: %s, ir.api_response: %s",
         #          ir, ir.api_response)
         return ir
