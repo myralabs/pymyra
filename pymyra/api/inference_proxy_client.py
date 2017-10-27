@@ -5,6 +5,7 @@ import sys
 import random
 import requests
 import distutils
+import distutils.util
 import logging
 
 log = logging.getLogger(__name__)

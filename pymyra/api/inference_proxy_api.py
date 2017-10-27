@@ -1,3 +1,4 @@
+import os
 import logging
 
 import inference_proxy_client
@@ -68,13 +69,18 @@ class InferenceProxyAPI(client_base.InferenceClientBase):
 
 
 def test():
+    host = os.getenv("MYRA_INFERENCE_PROXY_LB", "localhost")
+    port = int(os.getenv("MYRA_INFERENCE_PROXY_LB_PORT", 7096))
     inf_proxy_client = inference_proxy_client.InferenceProxyClient(
-        host="localhost", port=7096)
+        host=host, port=port)
     inf_proxy_api = InferenceProxyAPI(
         inference_proxy_client=inf_proxy_client)
+    intent_model_id = os.getenv(
+        "INTENT_MODEL_ID", "m-lica-02e90420e9b5f5f5eeb525e7d")
+    text = os.getenv("TEXT", "i was charged for a cancelled ride")
     api_result = inf_proxy_api.get(
-        text="i was charged for a cancelled ride",
-        intent_model_id="m-lica-02e90420e9b5f5f5eeb525e7d")
+        text=text,
+        intent_model_id=intent_model_id)
     print api_result
 
 
