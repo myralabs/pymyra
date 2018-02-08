@@ -26,3 +26,17 @@ class InferenceResult(object):
         return "InferenceResult: {intent:%s} {entities:%s} {api_response: %s}" % (
             self.intent, self.entities, self.api_response)
 
+
+    def toJSON(self):
+        return {"intent":{"label":self.intent.label,
+                          "score":self.intent.score},
+                "entities":{"entity_dict":self.entities.entity_dict},
+                "api_response":self.api_response}
+
+    @classmethod
+    def fromJSON(cls, j):
+        return cls(
+            intent_label=j.get("intent",{}).get("label"),
+            intent_score=j.get("intent",{}).get("score"),
+            entities=j.get("entities",{}).get("entity_dict"),
+            api_response=j.get("api_response"))
