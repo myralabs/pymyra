@@ -1,9 +1,11 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import os
 import logging
 
-import inference_proxy_client
-import messages
-import client_base
+from . import inference_proxy_client
+from . import messages
+from . import client_base
 
 log = logging.getLogger(__name__)
 
@@ -81,7 +83,7 @@ def test():
     api_result = inf_proxy_api.get(
         text=text,
         intent_model_id=intent_model_id)
-    print api_result
+    print(api_result)
 
 
 if __name__ == "__main__":

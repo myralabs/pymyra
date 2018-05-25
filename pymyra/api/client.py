@@ -1,16 +1,18 @@
 from __future__ import print_function
+from __future__ import absolute_import
 import os, sys
 import requests
 import json
 import logging
 from os.path import expanduser, join
-import ConfigParser
-import urllib
+import six.moves.configparser
+import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
+from six.moves import input
 try:
     import http.client as http_client
 except ImportError:
     # Python 2
-    import httplib as http_client
+    import six.moves.http_client as http_client
 
 from . import messages
 from . import client_base
@@ -32,7 +34,7 @@ class CmdLineHandler(object):
             print("%s>> " % botName, startMessage)
         while True:
             try:
-                userInput = raw_input("> ")
+                userInput = input("> ")
                 if not userInput:
                     continue
                 self.processMessage(userInput)
@@ -49,7 +51,7 @@ class MyraConfig(object):
         self.config_file = config_file
         if not self.config_file:
             self.config_file = "./settings.conf"
-        self.config = ConfigParser.ConfigParser()
+        self.config = six.moves.configparser.ConfigParser()
         self.config.read(self.config_file)
 
     def get(self, section):
@@ -156,7 +158,7 @@ class InferenceClient(client_base.InferenceClientBase):
             _params = self.params
         if url_params:
             _params.update(url_params)
-        url += "&%s" % (urllib.urlencode(_params, doseq=True),)
+        url += "&%s" % (six.moves.urllib.parse.urlencode(_params, doseq=True),)
         log.info("API CALL url: %s", url)
         r = self._session.get(url)
         if r.status_code != 200:
