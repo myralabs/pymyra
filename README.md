@@ -1,3 +1,7 @@
+# DEPRECATED: THESE APIs ARE NOT SUPPORTED ANY MORE.
+
+This repo will be deleted shortly.
+
 # pymyra
 
 The Python SDK for the Myra Conversational AI REST API. Myra's APIs are trained on over a billion news articles, conversational logs, and targeted web pages, and are paired with the latest AI research to deliver industry-leading intent parsing and entity extraction.
